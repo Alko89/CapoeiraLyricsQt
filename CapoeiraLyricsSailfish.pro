@@ -33,8 +33,3 @@ SAILFISHAPP_ICONS = 86x86 108x108 128x128 256x256
 HEADERS += \
     src/csongs.h \
     src/csong.h
-
-MY_RESOURCES = \
-  capoeiralyrics.json
-
-OTHER_SOURCES += $$MY_RESOURCES
