@@ -14,8 +14,8 @@ CSongs::CSongs(QObject *parent) : QAbstractListModel(parent)
 bool CSongs::loadJson(CSongs::SaveFormat saveFormat)
 {
     QFile loadFile(saveFormat == Json
-        ? QStringLiteral("/opt/sdk/componentgallery/usr/capoeiralyrics.json")
-        : QStringLiteral("/opt/sdk/componentgallery/usr/capoeiralyrics.dat"));
+        ? QStringLiteral("capoeiralyrics.json")
+        : QStringLiteral("capoeiralyrics.dat"));
 
     if (!loadFile.open(QIODevice::ReadOnly)) {
         qWarning("Couldn't open save file.");

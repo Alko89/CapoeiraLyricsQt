@@ -33,7 +33,7 @@
 #endif
 
 #include <sailfishapp.h>
-#include <csongs.h>
+#include <src/csongs.h>
 
 
 int main(int argc, char *argv[])

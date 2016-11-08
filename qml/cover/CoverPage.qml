@@ -35,10 +35,10 @@ CoverBackground {
     Label {
         id: label
         anchors.centerIn: parent
-        text: qsTr("My Cover")
+        text: qsTr("CapoeiraLyrics")
     }
 
-    CoverActionList {
+    /*CoverActionList {
         id: coverAction
 
         CoverAction {
@@ -48,7 +48,7 @@ CoverBackground {
         CoverAction {
             iconSource: "image://theme/icon-cover-pause"
         }
-    }
+    }*/
 }
 
 
