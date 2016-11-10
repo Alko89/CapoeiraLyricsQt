@@ -18,33 +18,23 @@ public:
 
     explicit CSongs(QObject *parent = 0);
 
-    enum SaveFormat {
-        Json, Binary
-    };
-
-    bool loadJson(SaveFormat saveFormat);
-    bool saveJson(SaveFormat saveFormat) const;
+    bool loadJson();
+    bool saveJson() const;
 
     void read(const QJsonObject &json);
     void write(QJsonObject &json) const;
 
 
-    virtual int rowCount(const QModelIndex&) const { return cSongs.size(); }
+    virtual int rowCount(const QModelIndex&) const { return cFilterSongs.size(); }
     virtual QVariant data(const QModelIndex &index, int role) const;
 
     QHash<int, QByteArray> roleNames() const;
 
-    Q_INVOKABLE QString getTitle(const int i);
-    Q_INVOKABLE QString getSubtitle(const int i);
-    Q_INVOKABLE QString getUrl(const int i);
-    Q_INVOKABLE QString getYTPlayer(const int i);
-    Q_INVOKABLE QString getText(const int i);
-
-    Q_INVOKABLE int getSize();
+    Q_INVOKABLE void filter(const QString searchString);
 
 private:
-    QList<CSong> cSongs;
-    //QMap<QString ,CSong> cSongs;
+    QMap<QString ,CSong> cSongs;
+    QList<CSong> cFilterSongs;
 
 signals:
 

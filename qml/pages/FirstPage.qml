@@ -37,8 +37,8 @@ Page {
     id: page
     property string searchString
 
-    //onSearchStringChanged: listModel.update()
-    //Component.onCompleted: listModel.update()
+    onSearchStringChanged: songs.filter(searchString)
+    Component.onCompleted: songs.filter(searchString)
 
     Loader {
         anchors.fill: parent
@@ -69,9 +69,7 @@ Page {
     Component {
         id: listViewComponent
         SilicaListView {
-            model: Songs {
-                id: song
-            }
+            model: songs
 
             anchors.fill: parent
             currentIndex: -1 // otherwise currentItem will steal focus
@@ -110,5 +108,8 @@ Page {
 
             VerticalScrollDecorator {}
         }
+    }
+    Songs {
+        id: songs
     }
 }

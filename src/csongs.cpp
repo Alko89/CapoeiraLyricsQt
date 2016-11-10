@@ -7,15 +7,14 @@
 
 CSongs::CSongs(QObject *parent) : QAbstractListModel(parent)
 {
-    CSongs::loadJson(CSongs::Json);
+    CSongs::loadJson();
+    CSongs::filter("");
 }
 
 //! [3]
-bool CSongs::loadJson(CSongs::SaveFormat saveFormat)
+bool CSongs::loadJson()
 {
-    QFile loadFile(saveFormat == Json
-        ? QStringLiteral("/opt/sdk/componentgallery/usr/capoeiralyrics.json")
-        : QStringLiteral("capoeiralyrics.dat"));
+    QFile loadFile(QStringLiteral("/opt/sdk/componentgallery/usr/capoeiralyrics.json"));
 
     if (!loadFile.open(QIODevice::ReadOnly)) {
         qWarning("Couldn't open save file.");
@@ -24,9 +23,7 @@ bool CSongs::loadJson(CSongs::SaveFormat saveFormat)
 
     QByteArray saveData = loadFile.readAll();
 
-    QJsonDocument loadDoc(saveFormat == Json
-        ? QJsonDocument::fromJson(saveData)
-        : QJsonDocument::fromBinaryData(saveData));
+    QJsonDocument loadDoc(QJsonDocument::fromJson(saveData));
 
     read(loadDoc.object());
 
@@ -35,11 +32,9 @@ bool CSongs::loadJson(CSongs::SaveFormat saveFormat)
 //! [3]
 
 //! [4]
-bool CSongs::saveJson(CSongs::SaveFormat saveFormat) const
+bool CSongs::saveJson() const
 {
-    QFile saveFile(saveFormat == Json
-        ? QStringLiteral("save.json")
-        : QStringLiteral("save.dat"));
+    QFile saveFile(QStringLiteral("save.json"));
 
     if (!saveFile.open(QIODevice::WriteOnly)) {
         qWarning("Couldn't open save file.");
@@ -49,9 +44,7 @@ bool CSongs::saveJson(CSongs::SaveFormat saveFormat) const
     QJsonObject gameObject;
     write(gameObject);
     QJsonDocument saveDoc(gameObject);
-    saveFile.write(saveFormat == Json
-        ? saveDoc.toJson()
-        : saveDoc.toBinaryData());
+    saveFile.write(saveDoc.toJson());
 
     return true;
 }
@@ -66,8 +59,7 @@ void CSongs::read(const QJsonObject &json)
 
         CSong song;
         song.read(songObject);
-        //cSongs.insert(song.cTitle ,song);
-        cSongs.append(song);
+        cSongs.insert(song.cTitle.toLower() ,song);
     }
 }
 //! [1]
@@ -106,63 +98,33 @@ QVariant CSongs::data(const QModelIndex &index, int role) const {
         return QVariant();
     }
     if(role == CTitleRole) {
-        return QVariant(cSongs[index.row()].cTitle);
+        //return QVariant(cSongs[index.row()].cTitle);
+        return QVariant(cFilterSongs[index.row()].cTitle);
     }
     if(role == CSubtitleRole) {
-        return QVariant(cSongs[index.row()].cSubtitle);
+        return QVariant(cFilterSongs[index.row()].cSubtitle);
     }
     if(role == CUrlRole) {
-        return QVariant(cSongs[index.row()].cUrl);
+        return QVariant(cFilterSongs[index.row()].cUrl);
     }
     if(role == CYTPlayerRole) {
-        return QVariant(cSongs[index.row()].cYTPlayer);
+        return QVariant(cFilterSongs[index.row()].cYTPlayer);
     }
     if(role == CTextTole) {
-        return QVariant(cSongs[index.row()].cText);
+        return QVariant(cFilterSongs[index.row()].cText);
     }
     return QVariant();
 }
 
-QString CSongs::getTitle(const int i) {
-    if(i < 0 || i >= cSongs.size()) {
-        return "";
-    }
-    CSong value = cSongs[i];
-    return value.cTitle;
-}
+void CSongs::filter(const QString searchString) {
+    if (searchString == "")
+        cFilterSongs = cSongs.values();
+    else {
+        cFilterSongs.clear();
 
-QString CSongs::getSubtitle(const int i) {
-    if(i < 0 || i >= cSongs.size()) {
-        return "";
+        QMap<QString, CSong>::iterator i;
+        for (i = cSongs.begin(); i != cSongs.end(); ++i)
+            if (i.key().contains(searchString))
+                cFilterSongs.append(i.value());
     }
-    CSong value = cSongs[i];
-    return value.cSubtitle;
-}
-
-QString CSongs::getUrl(const int i) {
-    if(i < 0 || i >= cSongs.size()) {
-        return "";
-    }
-    CSong value = cSongs[i];
-    return value.cUrl;
-}
-
-QString CSongs::getYTPlayer(const int i) {
-    if(i < 0 || i >= cSongs.size()) {
-        return "";
-    }
-    CSong value = cSongs[i];
-    return value.cYTPlayer;
-}
-
-QString CSongs::getText(const int i) {
-    if(i < 0 || i >= cSongs.size()) {
-        return "";
-    }
-    CSong value = cSongs[i];
-    return value.cText;
-}
-
-int CSongs::getSize() {
-    return cSongs.size();
 }
