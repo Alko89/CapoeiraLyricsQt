@@ -14,7 +14,7 @@ CSongs::CSongs(QObject *parent) : QAbstractListModel(parent)
 bool CSongs::loadJson(CSongs::SaveFormat saveFormat)
 {
     QFile loadFile(saveFormat == Json
-        ? QStringLiteral("capoeiralyrics.json")
+        ? QStringLiteral("/opt/sdk/componentgallery/usr/capoeiralyrics.json")
         : QStringLiteral("capoeiralyrics.dat"));
 
     if (!loadFile.open(QIODevice::ReadOnly)) {
@@ -66,6 +66,7 @@ void CSongs::read(const QJsonObject &json)
 
         CSong song;
         song.read(songObject);
+        //cSongs.insert(song.cTitle ,song);
         cSongs.append(song);
     }
 }
@@ -91,7 +92,12 @@ void CSongs::write(QJsonObject &json) const
 
 QHash<int, QByteArray> CSongs::roleNames() const {
     QHash<int, QByteArray> roles;
-    roles[NameRole] = "name";
+    roles[CTitleRole] = "title";
+    roles[CSubtitleRole] = "subtitle";
+    roles[CUrlRole] = "url";
+    roles[CYTPlayerRole] = "ytplayer";
+    roles[CTextTole] = "text";
+
     return roles;
 }
 
@@ -99,8 +105,20 @@ QVariant CSongs::data(const QModelIndex &index, int role) const {
     if(!index.isValid()) {
         return QVariant();
     }
-    if(role == NameRole) {
+    if(role == CTitleRole) {
         return QVariant(cSongs[index.row()].cTitle);
+    }
+    if(role == CSubtitleRole) {
+        return QVariant(cSongs[index.row()].cSubtitle);
+    }
+    if(role == CUrlRole) {
+        return QVariant(cSongs[index.row()].cUrl);
+    }
+    if(role == CYTPlayerRole) {
+        return QVariant(cSongs[index.row()].cYTPlayer);
+    }
+    if(role == CTextTole) {
+        return QVariant(cSongs[index.row()].cText);
     }
     return QVariant();
 }

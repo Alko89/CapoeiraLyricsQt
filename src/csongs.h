@@ -9,7 +9,11 @@ class CSongs : public QAbstractListModel
     Q_OBJECT
 public:
     enum DemoRoles {
-        NameRole = Qt::UserRole + 1,
+        CTitleRole = Qt::UserRole + 1,
+        CSubtitleRole,
+        CUrlRole,
+        CYTPlayerRole,
+        CTextTole
     };
 
     explicit CSongs(QObject *parent = 0);
@@ -40,6 +44,7 @@ public:
 
 private:
     QList<CSong> cSongs;
+    //QMap<QString ,CSong> cSongs;
 
 signals:
 

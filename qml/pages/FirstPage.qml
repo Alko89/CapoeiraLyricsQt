@@ -36,10 +36,9 @@ import capoeiralyrics 1.0
 Page {
     id: page
     property string searchString
-    //property bool keepSearchFieldFocus
 
-    onSearchStringChanged: listModel.update()
-    Component.onCompleted: listModel.update()
+    //onSearchStringChanged: listModel.update()
+    //Component.onCompleted: listModel.update()
 
     Loader {
         anchors.fill: parent
@@ -70,7 +69,10 @@ Page {
     Component {
         id: listViewComponent
         SilicaListView {
-            model: listModel
+            model: Songs {
+                id: song
+            }
+
             anchors.fill: parent
             currentIndex: -1 // otherwise currentItem will steal focus
             header:  Item {
@@ -96,82 +98,17 @@ Page {
                     color: searchString.length > 0 ? (highlighted ? Theme.secondaryHighlightColor : Theme.secondaryColor)
                                                    : (highlighted ? Theme.highlightColor : Theme.primaryColor)
                     textFormat: Text.StyledText
-                    text: Theme.highlightText(model.text, searchString, Theme.highlightColor)
+                    text: Theme.highlightText(title, searchString, Theme.highlightColor)
                 }
 
                 onClicked: window.pageStack.push(Qt.resolvedUrl("SecondPage.qml"), {
-                                                     songTitle: song.getTitle(model.index),
-                                                     songSubtitle: song.getSubtitle(model.index),
-                                                     songText: song.getText(model.index)
+                                                     songTitle: title,
+                                                     songSubtitle: subtitle,
+                                                     songText: text
                                                  })
             }
 
             VerticalScrollDecorator {}
-
-            /*Component.onCompleted: {
-                if (keepSearchFieldFocus) {
-                    searchField.forceActiveFocus()
-                }
-                keepSearchFieldFocus = false
-            }*/
         }
     }
-
-    Songs {
-        id: song
-    }
-
-    ListModel {
-        id: listModel
-
-        property var countries: []
-        Component.onCompleted: {
-            for (var i = 0; i < song.getSize(); i++)
-                countries.push([song.getTitle(i)] + "_" + i);
-        }
-
-
-        function update() {
-            var filteredCountries = countries.filter(function (country) { return country.toLowerCase().indexOf(searchString) !== -1 })
-
-            var country
-            var found
-            var i
-
-            // helper objects that can be quickly accessed
-            var filteredCountryObject = new Object
-            for (i = 0; i < filteredCountries.length; ++i) {
-                filteredCountryObject[filteredCountries[i]] = true
-            }
-            var existingCountryObject = new Object
-            for (i = 0; i < count; ++i) {
-                country = get(i).text
-                existingCountryObject[country] = true
-            }
-
-            // remove items no longer in filtered set
-            i = 0
-            while (i < count) {
-                country = get(i).text
-                found = filteredCountryObject.hasOwnProperty(country)
-                if (!found) {
-                    remove(i)
-                } else {
-                    i++
-                }
-            }
-
-            // add new items
-            for (i = 0; i < filteredCountries.length; ++i) {
-                country = filteredCountries[i]
-                found = existingCountryObject.hasOwnProperty(country)
-                if (!found) {
-                    // for simplicity, just adding to end instead of corresponding position in original list
-                    var c = country.split("_");
-                    append({ "text": c[0], "index": c[1]})
-                }
-            }
-        }
-    }
-
 }
