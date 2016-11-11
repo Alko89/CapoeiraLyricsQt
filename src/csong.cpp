@@ -17,12 +17,10 @@ void CSong::read(const QJsonObject &json)
     //cLyrics.clear();
     QJsonObject lyricsObject = json["lyrics"].toObject();
     cText = lyricsObject["text"].toString();
-    //for (int i = 0; i < lyricsArray.size(); ++i) {
-        //QJsonObject lyricObject = lyricsArray[i].toObject();
-        //Lyric lyric;
-        //lyric.read(lyricObject);
-        //cLyrics.append(lyric);
-    //}
+
+    QJsonObject::iterator i;
+    for (i = lyricsObject.begin(); i != lyricsObject.end(); ++i)
+        cLyrics.insert(i.key(), i.value().toString());
 }
 //! [0]
 

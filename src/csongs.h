@@ -13,7 +13,8 @@ public:
         CSubtitleRole,
         CUrlRole,
         CYTPlayerRole,
-        CTextTole
+        CTextRole,
+        CTranslationsRole
     };
 
     explicit CSongs(QObject *parent = 0);
@@ -33,7 +34,7 @@ public:
     Q_INVOKABLE void filter(const QString searchString);
 
 private:
-    QMap<QString ,CSong> cSongs;
+    QMap<QString, CSong> cSongs;
     QList<CSong> cFilterSongs;
 
 signals:

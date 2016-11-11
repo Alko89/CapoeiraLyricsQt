@@ -36,7 +36,8 @@ Page {
     id: songPage
     property alias songTitle: title.title
     property alias songSubtitle: subtitle.text
-    property alias songText: text.text
+    property alias songText: lyrics.text
+    property alias songTranslation: translations.text
 
     SilicaFlickable {
         anchors.fill: parent
@@ -53,21 +54,13 @@ Page {
 
             PageHeader {
                 id: title
-                //title: "Labels"
             }
             SectionHeader {
                 id: subtitle
-                //text: "Text styling"
             }
-            /*Label {
-                text: "Header text"
-                anchors.horizontalCenter: parent.horizontalCenter
-                font.family: Theme.fontFamilyHeading
-            }*/
             Label {
-                id: text
+                id: lyrics
                 //wrapMode: Text.Wrap
-                //text: "Normal text"
                 //anchors.horizontalCenter: parent.horizontalCenter
                 wrapMode: Text.WordWrap
                 anchors {
@@ -76,7 +69,7 @@ Page {
                 }
             }
             Label {
-                text: "Secondary text"
+                id: translations
                 color: Theme.secondaryColor
                 anchors.horizontalCenter: parent.horizontalCenter
             }

@@ -88,7 +88,8 @@ QHash<int, QByteArray> CSongs::roleNames() const {
     roles[CSubtitleRole] = "subtitle";
     roles[CUrlRole] = "url";
     roles[CYTPlayerRole] = "ytplayer";
-    roles[CTextTole] = "text";
+    roles[CTextRole] = "text";
+    roles[CTranslationsRole] = "translations";
 
     return roles;
 }
@@ -110,8 +111,22 @@ QVariant CSongs::data(const QModelIndex &index, int role) const {
     if(role == CYTPlayerRole) {
         return QVariant(cFilterSongs[index.row()].cYTPlayer);
     }
-    if(role == CTextTole) {
+    if(role == CTextRole) {
         return QVariant(cFilterSongs[index.row()].cText);
+    }
+    if(role == CTranslationsRole) {
+        QString translations = "";
+
+        if(cFilterSongs[index.row()].cLyrics.contains("en")){
+            translations = QString("<br/>English<br/>%1").arg(
+                        cFilterSongs[index.row()].cLyrics.value("en"));
+        }
+        if(cFilterSongs[index.row()].cLyrics.contains("ru")){
+            translations = QString("%1<br/><br/>Русский<br/>%2").arg(
+                        translations, cFilterSongs[index.row()].cLyrics.value("ru"));
+        }
+
+        return QVariant(translations);
     }
     return QVariant();
 }
@@ -120,7 +135,9 @@ void CSongs::filter(const QString searchString) {
     if (searchString == "")
         cFilterSongs = cSongs.values();
     else {
+        cFilterSongs.size();
         cFilterSongs.clear();
+        cFilterSongs.size();
 
         QMap<QString, CSong>::iterator i;
         for (i = cSongs.begin(); i != cSongs.end(); ++i)

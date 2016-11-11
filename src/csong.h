@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QJsonObject>
+#include <QMap>
 
 class CSong
 {
@@ -16,9 +17,9 @@ public:
     QString cSubtitle;
     QString cYTPlayer;
     QString cText;
+    QMap<QString, QString> cLyrics;
 
 private:
-    //QList<Lyric> cLyrics;
 
 signals:
 

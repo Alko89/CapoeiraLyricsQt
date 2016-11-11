@@ -102,7 +102,8 @@ Page {
                 onClicked: window.pageStack.push(Qt.resolvedUrl("SecondPage.qml"), {
                                                      songTitle: title,
                                                      songSubtitle: subtitle,
-                                                     songText: text
+                                                     songText: text,
+                                                     songTranslation: translations
                                                  })
             }
 
