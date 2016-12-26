@@ -5,7 +5,6 @@ CSong::CSong()
 
 }
 
-//! [0]
 void CSong::read(const QJsonObject &json)
 {
     cUrl = json["url"].toString();
@@ -13,26 +12,26 @@ void CSong::read(const QJsonObject &json)
     cSubtitle = json["subtitle"].toString();
     cYTPlayer = json["ytplayer"].toString();
 
-
-    //cLyrics.clear();
     QJsonObject lyricsObject = json["lyrics"].toObject();
-    cText = lyricsObject["text"].toString();
 
     QJsonObject::iterator i;
     for (i = lyricsObject.begin(); i != lyricsObject.end(); ++i)
         cLyrics.insert(i.key(), i.value().toString());
 }
-//! [0]
 
-//! [1]
 void CSong::write(QJsonObject &json) const
 {
-    /*QJsonArray lyricsArray;
-    foreach (const Lyric lyric, cLyrics) {
-        QJsonObject lyricObject;
-        lyric.write(lyricObject);
-        lyricsArray.append(lyricObject);
+    json["url"] = cUrl;
+    json["title"] = cTitle;
+    json["subtitle"] = cSubtitle;
+    json["ytplayer"] = cYTPlayer;
+
+    QJsonObject lyricsObject;
+    QMapIterator<QString, QString> i(cLyrics);
+    while (i.hasNext()) {
+        i.next();
+        lyricsObject[i.key()] = i.value();
     }
-    json["lyrics"] = lyricsArray;*/
+
+    json["lyrics"] = lyricsObject;
 }
-//! [1]

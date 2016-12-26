@@ -16,7 +16,6 @@ public:
     QString cUrl;
     QString cSubtitle;
     QString cYTPlayer;
-    QString cText;
     QMap<QString, QString> cLyrics;
 
 private:

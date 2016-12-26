@@ -60,8 +60,6 @@ Page {
             }
             Label {
                 id: lyrics
-                //wrapMode: Text.Wrap
-                //anchors.horizontalCenter: parent.horizontalCenter
                 wrapMode: Text.WordWrap
                 anchors {
                     left: parent.left
@@ -71,7 +69,11 @@ Page {
             Label {
                 id: translations
                 color: Theme.secondaryColor
-                anchors.horizontalCenter: parent.horizontalCenter
+                wrapMode: Text.WordWrap
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                }
             }
         }
     }

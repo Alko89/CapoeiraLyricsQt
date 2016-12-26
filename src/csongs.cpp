@@ -1,4 +1,5 @@
 #include "csongs.h"
+#include "ccrawler.h"
 
 #include <QFile>
 #include <QJsonDocument>
@@ -7,11 +8,13 @@
 
 CSongs::CSongs(QObject *parent) : QAbstractListModel(parent)
 {
+    CCrawler *cr = new CCrawler();
+    cSongs = cr->crawlCapoeiraLyrics();
+
     CSongs::loadJson();
     CSongs::filter("");
 }
 
-//! [3]
 bool CSongs::loadJson()
 {
     QFile loadFile(QStringLiteral("/opt/sdk/componentgallery/usr/capoeiralyrics.json"));
@@ -29,12 +32,10 @@ bool CSongs::loadJson()
 
     return true;
 }
-//! [3]
 
-//! [4]
 bool CSongs::saveJson() const
 {
-    QFile saveFile(QStringLiteral("save.json"));
+    QFile saveFile(QStringLiteral("capoeiralyrics.json"));
 
     if (!saveFile.open(QIODevice::WriteOnly)) {
         qWarning("Couldn't open save file.");
@@ -48,9 +49,7 @@ bool CSongs::saveJson() const
 
     return true;
 }
-//! [4]
 
-//! [1]
 void CSongs::read(const QJsonObject &json)
 {
     QJsonArray songsArray = json["songs"].toArray();
@@ -59,27 +58,21 @@ void CSongs::read(const QJsonObject &json)
 
         CSong song;
         song.read(songObject);
-        cSongs.insert(song.cTitle.toLower() ,song);
+        cSongs.insert(song.cTitle.toLower(), song);
     }
 }
-//! [1]
 
-//! [2]
 void CSongs::write(QJsonObject &json) const
 {
-    /*QJsonObject playerObject;
-    //mPlayer.write(playerObject);
-    json["player"] = playerObject;
+    QJsonArray songsArray;
+    foreach (const CSong song, cSongs.values()) {
+        QJsonObject songObject;
+        song.write(songObject);
+        songsArray.append(songObject);
+    }
 
-    QJsonArray levelArray;
-    /*foreach (const Level level, mLevels) {
-        QJsonObject levelObject;
-        level.write(levelObject);
-        levelArray.append(levelObject);
-    }*/
-    //json["levels"] = levelArray;
+    json["songs"] = songsArray;
 }
-//! [2]
 
 
 QHash<int, QByteArray> CSongs::roleNames() const {
@@ -112,7 +105,13 @@ QVariant CSongs::data(const QModelIndex &index, int role) const {
         return QVariant(cFilterSongs[index.row()].cYTPlayer);
     }
     if(role == CTextRole) {
-        return QVariant(cFilterSongs[index.row()].cText);
+        QString text = "";
+
+        if(cFilterSongs[index.row()].cLyrics.contains("text")){
+            text = cFilterSongs[index.row()].cLyrics.value("text");
+        }
+
+        return text;
     }
     if(role == CTranslationsRole) {
         QString translations = "";

@@ -33,8 +33,9 @@
 #endif
 
 #include <sailfishapp.h>
-#include <src/csongs.h>
 
+#include "src/csongs.h"
+#include "src/ccrawler.h"
 
 int main(int argc, char *argv[])
 {

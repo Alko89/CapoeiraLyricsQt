@@ -16,7 +16,8 @@ CONFIG += sailfishapp
 
 SOURCES += src/CapoeiraLyricsSailfish.cpp \
     src/csongs.cpp \
-    src/csong.cpp
+    src/csong.cpp \
+    src/ccrawler.cpp
 
 OTHER_FILES += qml/CapoeiraLyricsSailfish.qml \
     qml/cover/CoverPage.qml \
@@ -32,4 +33,5 @@ SAILFISHAPP_ICONS = 86x86 108x108 128x128 256x256
 
 HEADERS += \
     src/csongs.h \
-    src/csong.h
+    src/csong.h \
+    src/ccrawler.h
