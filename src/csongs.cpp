@@ -8,16 +8,19 @@
 
 CSongs::CSongs(QObject *parent) : QAbstractListModel(parent)
 {
-    CCrawler *cr = new CCrawler();
-    cSongs = cr->crawlCapoeiraLyrics();
+    //CCrawler *cr = new CCrawler();
+    //cSongs = cr->crawlCapoeiraLyrics();
+    //CSongs::saveJson();
 
     CSongs::loadJson();
+
     CSongs::filter("");
 }
 
 bool CSongs::loadJson()
 {
-    QFile loadFile(QStringLiteral("/opt/sdk/componentgallery/usr/capoeiralyrics.json"));
+    //QFile loadFile(QStringLiteral("/opt/sdk/componentgallery/usr/capoeiralyrics.json"));
+    QFile loadFile(QStringLiteral("capoeiralyrics.json"));
 
     if (!loadFile.open(QIODevice::ReadOnly)) {
         qWarning("Couldn't open save file.");

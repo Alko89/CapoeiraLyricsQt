@@ -35,3 +35,6 @@ HEADERS += \
     src/csongs.h \
     src/csong.h \
     src/ccrawler.h
+
+DISTFILES += \
+    qml/pages/LoadingPage.qml

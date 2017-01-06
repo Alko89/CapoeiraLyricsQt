@@ -25,7 +25,12 @@ QMap<QString, CSong> CCrawler::crawlCapoeiraLyrics(){
 
     QRegularExpression re("songs(.+)\\.html");
     QRegularExpressionMatchIterator i = re.globalMatch(page);
+
+    setPageIndex(0);
+
     while (i.hasNext()) {
+        setPageIndex(pageIndex()++);
+
         QRegularExpressionMatch match = i.next();
         QString word = "http://capoeiralyrics.info/" + match.captured();
 
@@ -101,4 +106,16 @@ void CCrawler::replyFinished(QNetworkReply* reply)
 {
     QByteArray data = reply->readAll();
     page = QString(data);
+}
+
+
+void CCrawler::setPageIndex(const int index){
+    if(index != page_i){
+        page_i = index;
+        emit pageIndexChanged();
+    }
+}
+
+int CCrawler::pageIndex() const{
+    return page_i;
 }
